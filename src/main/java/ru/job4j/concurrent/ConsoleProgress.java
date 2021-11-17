@@ -23,10 +23,8 @@ public class ConsoleProgress implements Runnable {
         try {
             progress.start();
             Thread.sleep(1000);
-            progress.interrupt();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
     }
 }
