@@ -28,8 +28,10 @@ public class Wget implements Runnable {
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
             }
             var endTime = Instant.now();
-            var time = Duration.between(endTime, startTime).toMillis();
-            Thread.sleep(time);
+            var time = Duration.between(startTime, endTime).toMillis();
+            if (time < speed) {
+                Thread.sleep(speed);
+            }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             Thread.currentThread().interrupt();
@@ -37,8 +39,8 @@ public class Wget implements Runnable {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        String url = "https://raw.githubusercontent.com/peterarsentev/course_test/master/pom.xml";
-        int speed = 5000;
+        String url = args[0];
+        int speed = Integer.parseInt(args[1]);
         Thread wget = new Thread(new Wget(url, speed));
         wget.start();
         wget.join();
