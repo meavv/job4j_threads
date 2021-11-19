@@ -1,5 +1,6 @@
 package ru.job4j.thread;
 
+import javax.xml.transform.Templates;
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -30,22 +31,22 @@ public class Wget implements Runnable {
             byte[] dataBuffer = new byte[1024];
             int bytesRead;
             var startTime = Instant.now();
-            long bytesWrited = 0;
+            long bytesWrite = 0;
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
+                var startTime1 = Instant.now();
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
-                bytesWrited = bytesWrited + bytesRead;
+                bytesWrite = bytesWrite + bytesRead;
+                if (bytesWrite >= speed) {
+                    var endTime1 = Instant.now();
+                    var time = Duration.between(startTime1, endTime1).toMillis();
+                    Thread.sleep(1000 - time);
+                    bytesWrite = 0;
+                }
+
             }
             var endTime = Instant.now();
-            var trueTime = bytesWrited / speed;
             var time = Duration.between(startTime, endTime).toSeconds();
-            var diffTime = trueTime - time;
-            if (trueTime > time) {
-                Thread.sleep(diffTime * 1000);
-            }
-            System.out.println("Размер " + bytesWrited);
             System.out.println("Секунд на скачивание " + time);
-            System.out.println("Секунд на скачивание с заданной скоростью " + trueTime);
-            System.out.println("Задержка " + diffTime);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
