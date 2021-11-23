@@ -39,9 +39,7 @@ public class Wget implements Runnable {
                 if (bytesWrite >= speed) {
                     var endTime1 = Instant.now();
                     var time = Duration.between(startTime1, endTime1).toMillis();
-                    if (time < 1000) {
-                        Thread.sleep(1000 - time);
-                    }
+                    Thread.sleep(1000 - time);
                     bytesWrite = 0;
                 }
 
