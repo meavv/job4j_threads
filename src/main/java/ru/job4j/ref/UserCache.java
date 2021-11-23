@@ -33,6 +33,7 @@ class ShareNotSafe {
         cache.add(user);
         Thread first = new Thread(
                 () -> {
+
                     user.setName("rename");
                 }
         );

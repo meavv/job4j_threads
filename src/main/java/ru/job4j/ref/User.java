@@ -1,8 +1,27 @@
 package ru.job4j.ref;
 
+import java.util.Objects;
+
 public class User {
+
     private int id;
+    private int amount;
     private String name;
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", amount=" + amount
+                + ", name='" + '}';
+    }
+
+    public User(int id, int amount) {
+        this.id = id;
+        this.amount = amount;
+    }
+
+    public User() {
+
+    }
 
     public static User of(String name) {
         User user = new User();
@@ -24,5 +43,30 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        User user = (User) o;
+        return id == user.id && amount == user.amount && Objects.equals(name, user.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, amount, name);
     }
 }
