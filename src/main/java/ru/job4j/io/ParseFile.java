@@ -27,6 +27,15 @@ public class ParseFile {
         return output.toString();
     }
 
+}
+
+class SaveFile {
+
+    private final File file;
+
+    public SaveFile(File file) {
+        this.file = file;
+    }
 
     public void saveContent(String content) {
         try (OutputStream o = new FileOutputStream(file)) {
@@ -37,5 +46,4 @@ public class ParseFile {
             e.printStackTrace();
         }
     }
-
 }
