@@ -11,12 +11,13 @@ public class CountBarrier {
         this.total = total;
     }
 
-    public void count() {
-        monitor.notifyAll();
+    public synchronized void count() {
         count++;
+        monitor.notifyAll();
+
     }
 
-    public void await() {
+    public synchronized void await() {
         while (count < total) {
             try {
                 monitor.wait();
