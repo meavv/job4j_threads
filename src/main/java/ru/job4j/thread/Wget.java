@@ -33,16 +33,16 @@ public class Wget implements Runnable {
             var startTime = Instant.now();
             long bytesWrite = 0;
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
-                var startTime1 = Instant.now();
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
                 bytesWrite = bytesWrite + bytesRead;
                 if (bytesWrite >= speed) {
                     var endTime1 = Instant.now();
-                    var time = Duration.between(startTime1, endTime1).toMillis();
+                    var time = Duration.between(startTime, endTime1).toMillis();
                     if (time < 1000) {
                     Thread.sleep(1000 - time);
                     }
                     bytesWrite = 0;
+                    startTime = Instant.now();
                 }
 
             }
