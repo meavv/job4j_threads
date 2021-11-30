@@ -30,7 +30,6 @@ public class SimpleBlockingQueue<T> {
     public synchronized T poll() throws InterruptedException {
         while (queue.size() == 0) {
             wait();
-            System.out.println("Wait poll");
         }
         notifyAll();
         return queue.poll();
