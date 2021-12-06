@@ -15,19 +15,13 @@ public class CASCount {
     }
 
     public void increment() {
-        int temp;
         int ref;
-        try {
-            do {
+        do {
                 ref = count.get();
-                temp = count.get() + 1;
-            } while (!count.compareAndSet(ref, temp));
-
-        } catch (Exception e) {
-            throw new UnsupportedOperationException("Count is not impl.");
-        }
+            } while (!count.compareAndSet(ref, ref + 1));
 
     }
+
 
     public int get() {
         try {
