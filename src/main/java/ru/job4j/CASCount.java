@@ -24,11 +24,7 @@ public class CASCount {
 
 
     public int get() {
-        try {
-            return count.get();
-        } catch (Exception e) {
-            throw new UnsupportedOperationException("Count is not impl.");
-        }
+        return count.get();
     }
 
 }
