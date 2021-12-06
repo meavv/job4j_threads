@@ -20,8 +20,7 @@ public class ParallelSearch {
                 }
         );
         consumer.start();
-        final Thread producer =
-        new Thread(
+        final Thread producer = new Thread(
                 () -> {
                     for (int index = 0; index != 3; index++) {
                         try {
