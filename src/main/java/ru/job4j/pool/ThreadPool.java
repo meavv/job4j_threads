@@ -15,27 +15,34 @@ public class ThreadPool {
         for (int i = 0; i < size; i++) {
             threads.add(new Thread(() -> {
                 try {
-                    tasks.poll();
+                    tasks.poll().run();
                 } catch (Exception e) {
                     Thread.currentThread().interrupt();
                 }
             }));
         }
+        for (Thread t : threads) {
+            t.start();
+        }
 
     }
 
 
-    public void work(Runnable job) {
-        try {
-            tasks.offer(job);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    public void work(Runnable job) throws InterruptedException {
+        tasks.offer(job);
     }
 
     public void shutdown() {
         for (Thread thread : threads) {
             thread.interrupt();
         }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        ThreadPool threadPool = new ThreadPool();
+        threadPool.work(() -> System.out.println("1"));
+        threadPool.work(() -> System.out.println("2"));
+        threadPool.work(() -> System.out.println("3"));
+        threadPool.shutdown();
     }
 }
