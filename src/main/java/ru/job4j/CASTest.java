@@ -1,5 +1,8 @@
 package ru.job4j;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class CASTest {
 
     private int count = 0;
@@ -27,10 +30,23 @@ public class CASTest {
     }
 
     public static void main(String[] args) {
+        ExecutorService pool = Executors.newFixedThreadPool(
+                Runtime.getRuntime().availableProcessors()
+        );
 
+        pool.submit(() -> System.out.println("Execute " + Thread.currentThread().getName()));
+        pool.submit(() -> System.out.println("Execute " + Thread.currentThread().getName()));
 
-
-        System.out.println(0);
+        pool.shutdown();
+        while (!pool.isTerminated()) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("Execute " + Thread.currentThread().getName());
     }
+
 
 }
