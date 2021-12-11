@@ -21,12 +21,12 @@ public class SearchElement extends RecursiveTask<Integer> {
     @Override
     protected Integer compute() {
         if (to - from < 10) {
-            for (int i = from; i < to; i++) {
+            for (int i = from; i <= to; i++) {
                 if (array[i] == index) {
                     return i;
                 }
             }
-            return 0;
+            return -1;
         }
         int mid = (from + to) / 2;
         SearchElement l = new SearchElement(array, index, from, mid);
@@ -39,13 +39,6 @@ public class SearchElement extends RecursiveTask<Integer> {
     public static Integer search(int[] array, int index) {
         ForkJoinPool forkJoinPool = new ForkJoinPool();
         return forkJoinPool.invoke(new SearchElement(array, index, 0, array.length - 1));
-    }
-
-
-    public static void main(String[] args) {
-        int[] array = {1, 10, 2, 3, 7, 5, 9, 17, 18, 19, 101, 15489, 45, 99, 88, 77};
-        var x = SearchElement.search(array, 101);
-        System.out.println(x);
     }
 
 }

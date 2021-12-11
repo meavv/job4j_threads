@@ -16,6 +16,7 @@ public class ThreadPool {
             threads.add(new Thread(() -> {
                 try {
                     while (!Thread.currentThread().isInterrupted()) {
+                        System.out.println("Я родился: " + Thread.currentThread().getId());
                         tasks.poll().run();
                     }
                 } catch (Exception e) {
@@ -42,8 +43,14 @@ public class ThreadPool {
 
     public static void main(String[] args) throws InterruptedException {
         ThreadPool threadPool = new ThreadPool();
-        threadPool.work(() -> System.out.println("1"));
-        threadPool.work(() -> System.out.println("2"));
-        threadPool.work(() -> System.out.println("3"));
+        threadPool.work(() -> System.out.println("1 " + Thread.currentThread().getId()));
+        threadPool.work(() -> System.out.println("2 " + Thread.currentThread().getId()));
+        threadPool.work(() -> System.out.println("3 " + Thread.currentThread().getId()));
+        threadPool.work(() -> System.out.println("4 " + Thread.currentThread().getId()));
+        threadPool.work(() -> System.out.println("5 " + Thread.currentThread().getId()));
+        threadPool.work(() -> System.out.println("6 " + Thread.currentThread().getId()));
+        threadPool.work(() -> System.out.println("7 " + Thread.currentThread().getId()));
+        threadPool.work(() -> System.out.println("8 " + Thread.currentThread().getId()));
+        threadPool.shutdown();
     }
 }
