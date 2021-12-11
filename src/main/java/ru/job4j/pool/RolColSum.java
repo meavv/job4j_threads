@@ -1,6 +1,7 @@
 package ru.job4j.pool;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -37,18 +38,39 @@ public class RolColSum {
         public String toString() {
             return "Sums{" + "rowSum=" + rowSum + ", colSum=" + colSum + '}';
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            Sums sums = (Sums) o;
+            return rowSum == sums.rowSum && colSum == sums.colSum;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(rowSum, colSum);
+        }
+    }
+
+    private static Sums calc(int[][] array, int i) {
+        int rowSum = 0;
+        int colSum = 0;
+        for (int j = 0; j < array[i].length; j++) {
+            rowSum += array[i][j];
+            colSum += array[j][i];
+        }
+        return new Sums(rowSum, colSum);
     }
 
     public static Sums[] sum(int[][] matrix) {
         Sums[] array = new Sums[(matrix.length)];
         for (int i = 0; i < matrix.length; i++) {
-            int rowSum = 0;
-            int colSum = 0;
-            for (int j = 0; j < matrix[i].length; j++) {
-                rowSum += matrix[i][j];
-                colSum += matrix[j][i];
-            }
-            array[i] = new Sums(rowSum, colSum);
+            array[i] = calc(matrix, i);
         }
         System.out.println("Sum " + Arrays.toString(array));
         return array;
@@ -64,15 +86,7 @@ public class RolColSum {
     }
 
     public static CompletableFuture<Sums> run(int[][] array, int i) {
-        return CompletableFuture.supplyAsync(() -> {
-            int rowSum = 0;
-            int colSum = 0;
-            for (int j = 0; j < array[i].length; j++) {
-                rowSum += array[i][j];
-                colSum += array[j][i];
-            }
-            return new Sums(rowSum, colSum);
-        });
+        return CompletableFuture.supplyAsync(() -> calc(array, i));
     }
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
