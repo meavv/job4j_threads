@@ -2,6 +2,7 @@ package ru.job4j.pool;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class EmailNotification {
 
@@ -12,13 +13,13 @@ public class EmailNotification {
     public void emailTo(User user) {
             pool.submit(() -> {
                 String subject = "Notification " + user.getName() + " to email " + user.getEmail() + ".";
-                String body = "Add a new event to " + user.getName();
+                String body = "Add a new event to " + user.getName() + System.lineSeparator();
                 send(subject, body, user.getEmail());
             });
     }
 
     public void send(String subject, String body, String email) {
-
+        System.out.println(subject + body + email);
     }
 
     public void close() {
@@ -30,6 +31,18 @@ public class EmailNotification {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+
+        
+        EmailNotification e = new EmailNotification();
+        for (int i = 0; i < 10; i++) {
+            User user1 = new User("id" + i, "email");
+            e.emailTo(user1);
+        }
+        e.close();
+
     }
 }
 
